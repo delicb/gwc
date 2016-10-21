@@ -1,6 +1,7 @@
 package gwc
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/delicb/cliware"
@@ -98,4 +99,21 @@ func (c *Client) Options() *Request {
 	r := c.Request()
 	r.Method("OPTIONS")
 	return r
+}
+
+// Do creates new request, applies all provided middlewares to it and sends request.
+// Context that is used is context.Background()
+func (c *Client) Do(middlewares ...cliware.Middleware) (*Response, error) {
+	return c.DoCtx(context.Background(), middlewares...)
+}
+
+// DoCtx creates new request, applies all provided middlewares to it and sends request
+// with provided context.
+func (c *Client) DoCtx(ctx context.Context, middlewares ...cliware.Middleware) (*Response, error) {
+	req := c.Request()
+	req.SetContext(ctx)
+	for _, m := range middlewares {
+		req.Use(m)
+	}
+	return req.Send()
 }

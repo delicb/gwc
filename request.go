@@ -1,11 +1,8 @@
 package gwc
 
 import (
-	"bytes"
 	"context"
-	"io/ioutil"
 	"net/http"
-	"net/url"
 
 	"github.com/delicb/cliware"
 
@@ -169,25 +166,6 @@ func (r *Request) Send() (*Response, error) {
 		r.context = context.Background()
 	}
 	r.context = SetClient(r.context, r.Client.client)
-	resp, err := sender.Handle(r.context, createRequest())
+	resp, err := sender.Handle(r.context, cliware.EmptyRequest())
 	return BuildResponse(resp, err), err
-}
-
-// createRequest creates new empty request.
-// http.NewRequest is not used because it requires method, URL and body (which
-// can be nil). At this point - we do not have any of that data, since
-// middlewares will set it later. Only relevant thing that is set here is
-// method, which is defaulted to GET, but middlewares can change it.
-func createRequest() *http.Request {
-	req := &http.Request{
-		Method:     "GET",
-		URL:        &url.URL{},
-		Host:       "",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		Proto:      "HTTP/1.1",
-		Header:     make(http.Header),
-		Body:       ioutil.NopCloser(bytes.NewBuffer([]byte{})),
-	}
-	return req
 }
