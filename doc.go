@@ -8,4 +8,4 @@
 // HTTP client. Client does provide simple Request and Response types, but
 // they are only thin wrappers around same type in http package used for
 // middleware composition.
-package gwc
+package gwc // import "go.delic.rs/gwc"

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/delicb/cliware"
+	"go.delic.rs/cliware"
 )
 
 // Client is main point of contact with this this library. It is used to set
@@ -12,8 +12,11 @@ import (
 // overridden on per-request basis). For better performance (reuse of connections)
 // only one instance of client should be created.
 type Client struct {
-	Middleware *cliware.Chain
-	client     *http.Client
+	// Middleware     *cliware.Chain
+	Before *cliware.Chain
+	After  *cliware.Chain
+	client *http.Client
+	//PostMiddleware *cliware.Chain
 }
 
 // New creates and returns instance of a client.
@@ -29,27 +32,44 @@ func New(client *http.Client, middlewares ...cliware.Middleware) *Client {
 		client = http.DefaultClient
 	}
 	return &Client{
-		client:     client,
-		Middleware: cliware.NewChain(middlewares...),
+		client: client,
+		Before: cliware.NewChain(middlewares...),
+		After:  cliware.NewChain(),
+		// Middleware:     cliware.NewChain(middlewares...),
+		//PostMiddleware: cliware.NewChain(),
 	}
 }
 
 // Use adds provided middleware to this clients middleware chain.
-func (c *Client) Use(middleware cliware.Middleware) *Client {
-	c.Middleware.Use(middleware)
+func (c *Client) Use(m cliware.Middleware) *Client {
+	c.Before.Use(m)
 	return c
 }
 
 // UseFunc adds provided function to this clients middleware chain.
 func (c *Client) UseFunc(m func(cliware.Handler) cliware.Handler) *Client {
-	c.Middleware.UseFunc(m)
+	c.Before.UseFunc(m)
+	return c
+}
+
+// UsePost adds middleware that will be added to all requests sent by
+// this client AFTER middlewares from request itself are executed.
+func (c *Client) UsePost(m cliware.Middleware) *Client {
+	c.After.Use(m)
+	return c
+}
+
+// UsePOstFunc adds middleware that will be added to all requests sent by this
+// client AFTER middlewares from request itself are executed.
+func (c *Client) UsePostFunc(m func(cliware.Handler) cliware.Handler) *Client {
+	c.After.UseFunc(m)
 	return c
 }
 
 // Request creates and returns new request that uses this client to perform
 // HTTP request and uses its defined middlewares.
 func (c *Client) Request() *Request {
-	return NewRequest(c, c.Middleware.ChildChain())
+	return NewRequest(c, c.Before.Copy(), c.After.Copy())
 }
 
 // Get creates and returns new GET request.
@@ -115,5 +135,6 @@ func (c *Client) DoCtx(ctx context.Context, middlewares ...cliware.Middleware) (
 	for _, m := range middlewares {
 		req.Use(m)
 	}
+	//req.Use(c.PostMiddleware)
 	return req.Send()
 }

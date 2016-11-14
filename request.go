@@ -4,29 +4,40 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/delicb/cliware"
+	"go.delic.rs/cliware"
 
-	"github.com/delicb/cliware-middlewares/cookies"
-	"github.com/delicb/cliware-middlewares/headers"
-	"github.com/delicb/cliware-middlewares/query"
-	cwurl "github.com/delicb/cliware-middlewares/url"
+	"go.delic.rs/cliware-middlewares/cookies"
+	"go.delic.rs/cliware-middlewares/headers"
+	"go.delic.rs/cliware-middlewares/query"
+	cwurl "go.delic.rs/cliware-middlewares/url"
 )
 
 // Request is struct used to hold information (mostly middlewares) used
 // to construct HTTP request.
 type Request struct {
-	Middleware *cliware.Chain
-	Client     *Client
-	context    context.Context
+	//Middleware *cliware.Chain
+	before  *cliware.Chain
+	after   *cliware.Chain
+	Client  *Client
+	context context.Context
 }
 
 // NewRequest creates new instance of request for provided client and with
 // initial middleware chain.
-func NewRequest(client *Client, middleware *cliware.Chain) *Request {
+// func NewRequest(client *Client, middleware *cliware.Chain) *Request {
+// 	return &Request{
+// 		Middleware: middleware,
+// 		Client:     client,
+// 		context:    nil,
+// 	}
+// }
+
+func NewRequest(client *Client, before *cliware.Chain, after *cliware.Chain) *Request {
 	return &Request{
-		Middleware: middleware,
-		Client:     client,
-		context:    nil,
+		Client:  client,
+		before:  before,
+		after:   after,
+		context: nil,
 	}
 }
 
@@ -43,13 +54,13 @@ func (r *Request) SetContext(ctx context.Context) *Request {
 
 // Use adds provided middleware to this request middleware chain.
 func (r *Request) Use(m cliware.Middleware) *Request {
-	r.Middleware.Use(m)
+	r.before.Use(m)
 	return r
 }
 
 // UseFunc adds provided function to this request middleware chain.
 func (r *Request) UseFunc(m func(cliware.Handler) cliware.Handler) *Request {
-	r.Middleware.UseFunc(m)
+	r.before.UseFunc(m)
 	return r
 }
 
@@ -161,7 +172,10 @@ func (r *Request) sendRequest(ctx context.Context, req *http.Request) (*http.Res
 // This method uses all defined middlewares and client defined in requests
 // to construct HTTP request.
 func (r *Request) Send() (*Response, error) {
-	sender := r.Middleware.Exec(cliware.HandlerFunc(r.sendRequest))
+	r.before.Use(r.after)
+	sender := r.before.Exec(cliware.HandlerFunc(r.sendRequest))
+
+	// sender := r.Middleware.Exec(cliware.HandlerFunc(r.sendRequest))
 	if r.context == nil {
 		r.context = context.Background()
 	}
