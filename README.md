@@ -8,6 +8,10 @@ use it for server development.
 Because it is based on middlewares client is very pluggable. However, even out 
 of box it should support most common use cases.
 
+# Install
+Run `go get go.delic.rs/gwc` in terminal.
+
+
 # State
 This is early development, not stable, backward compatibility not guarantied.
 **Not recommended for use in production yet**.
