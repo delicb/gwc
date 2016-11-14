@@ -59,7 +59,7 @@ func (c *Client) UsePost(m cliware.Middleware) *Client {
 	return c
 }
 
-// UsePOstFunc adds middleware that will be added to all requests sent by this
+// UsePostFunc adds middleware that will be added to all requests sent by this
 // client AFTER middlewares from request itself are executed.
 func (c *Client) UsePostFunc(m func(cliware.Handler) cliware.Handler) *Client {
 	c.After.UseFunc(m)
@@ -135,6 +135,6 @@ func (c *Client) DoCtx(ctx context.Context, middlewares ...cliware.Middleware) (
 	for _, m := range middlewares {
 		req.Use(m)
 	}
-	//req.Use(c.PostMiddleware)
+	req.Use(c.After)
 	return req.Send()
 }

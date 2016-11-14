@@ -24,14 +24,6 @@ type Request struct {
 
 // NewRequest creates new instance of request for provided client and with
 // initial middleware chain.
-// func NewRequest(client *Client, middleware *cliware.Chain) *Request {
-// 	return &Request{
-// 		Middleware: middleware,
-// 		Client:     client,
-// 		context:    nil,
-// 	}
-// }
-
 func NewRequest(client *Client, before *cliware.Chain, after *cliware.Chain) *Request {
 	return &Request{
 		Client:  client,
