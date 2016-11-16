@@ -1,4 +1,6 @@
 # GWC (Go Web Client)
+[![Build Status](https://travis-ci.org/delicb/gwc.svg?branch=master)](https://travis-ci.org/delicb/gwc)
+[![codecov](https://codecov.io/gh/delicb/gwc/branch/master/graph/badge.svg)](https://codecov.io/gh/delicb/gwc)
 [![GoDoc](http://godoc.org/github.com/delicb/gwc?status.png)](http://godoc.org/github.com/delicb/gwc)
 
 GWC is GoLang HTTP client based on [Cliware](https://github.com/delicb/cliware)
