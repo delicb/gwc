@@ -1,4 +1,6 @@
 # GWC (Go Web Client)
+[![GoDoc](http://godoc.org/github.com/delicb/gwc?status.png)](http://godoc.org/github.com/delicb/gwc)
+
 GWC is GoLang HTTP client based on [Cliware](https://github.com/delicb/cliware)
 client middleware management library and its [middlewares](https://github.com/delicb/cliware-middlewares).
 
