@@ -7,16 +7,21 @@ import (
 	"go.delic.rs/cliware"
 )
 
+// Doer defines that object is capable of executing HTTP request with provided
+// middlewares.
+type Doer interface {
+	Do(middlewares ...cliware.Middleware) (*Response, error)
+	DoCtx(ctx context.Context, middlewares ...cliware.Middleware) (*Response, error)
+}
+
 // Client is main point of contact with this this library. It is used to set
 // up basic configuration that will be used for all requests (except if it is
 // overridden on per-request basis). For better performance (reuse of connections)
 // only one instance of client should be created.
 type Client struct {
-	// Middleware     *cliware.Chain
 	Before *cliware.Chain
 	After  *cliware.Chain
 	client *http.Client
-	//PostMiddleware *cliware.Chain
 }
 
 // New creates and returns instance of a client.

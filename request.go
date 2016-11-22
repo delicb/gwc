@@ -6,6 +6,7 @@ import (
 
 	"go.delic.rs/cliware"
 
+	"go.delic.rs/cliware-middlewares/body"
 	"go.delic.rs/cliware-middlewares/cookies"
 	"go.delic.rs/cliware-middlewares/headers"
 	"go.delic.rs/cliware-middlewares/query"
@@ -151,6 +152,12 @@ func (r *Request) AddCookie(cookie *http.Cookie) *Request {
 // SetCookie set cookie with provided name and value to current request.
 func (r *Request) SetCookie(key, value string) *Request {
 	r.Use(cookies.Set(key, value))
+	return r
+}
+
+// BodyJSON adds provided data to request as JSON encoded body.
+func (r *Request) BodyJSON(data interface{}) *Request {
+	r.Use(body.JSON(data))
 	return r
 }
 
