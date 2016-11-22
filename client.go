@@ -31,12 +31,18 @@ func New(client *http.Client, middlewares ...cliware.Middleware) *Client {
 	if client == nil {
 		client = http.DefaultClient
 	}
+	if client.CheckRedirect == nil {
+		client.CheckRedirect = CopyHeadersRedirect
+	}
+
+	// TODO: Uncommend when feature/retry is merged to master in cliware-middlewares
+	//chain := cliware.NewChain(retry.Enable(client))
+	chain := cliware.NewChain()
+	chain.Use(middlewares...)
 	return &Client{
 		client: client,
-		Before: cliware.NewChain(middlewares...),
+		Before: chain,
 		After:  cliware.NewChain(),
-		// Middleware:     cliware.NewChain(middlewares...),
-		//PostMiddleware: cliware.NewChain(),
 	}
 }
 
