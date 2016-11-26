@@ -16,7 +16,7 @@ func clientToContext(ctx context.Context, client *http.Client) context.Context {
 	return c
 }
 
-// GetClient returns client instance from context. If client is not set, nil
+// ClientFromContext returns client instance from context. If client is not set, nil
 // will be returned.
 func ClientFromContext(ctx context.Context) *http.Client {
 	cl := ctx.Value(clientKey)
