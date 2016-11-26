@@ -39,11 +39,9 @@ func New(client *http.Client, middlewares ...cliware.Middleware) *Client {
 	if client.CheckRedirect == nil {
 		client.CheckRedirect = CopyHeadersRedirect
 	}
-
-	// TODO: Uncommend when feature/retry is merged to master in cliware-middlewares
-	//chain := cliware.NewChain(retry.Enable(client))
-	chain := cliware.NewChain()
-	chain.Use(middlewares...)
+	// TODO: Uncomment when feature/retry is merged to master in cliware-middlewares
+	//retry.Enable(client)
+	chain := cliware.NewChain(middlewares...)
 	return &Client{
 		client: client,
 		Before: chain,
@@ -143,9 +141,7 @@ func (c *Client) Do(middlewares ...cliware.Middleware) (*Response, error) {
 func (c *Client) DoCtx(ctx context.Context, middlewares ...cliware.Middleware) (*Response, error) {
 	req := c.Request()
 	req.SetContext(ctx)
-	for _, m := range middlewares {
-		req.Use(m)
-	}
+	req.Use(middlewares...)
 	req.Use(c.After)
 	return req.Send()
 }

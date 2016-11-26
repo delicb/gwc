@@ -16,7 +16,6 @@ import (
 // Request is struct used to hold information (mostly middlewares) used
 // to construct HTTP request.
 type Request struct {
-	//Middleware *cliware.Chain
 	before  *cliware.Chain
 	after   *cliware.Chain
 	Client  *Client
@@ -46,8 +45,8 @@ func (r *Request) SetContext(ctx context.Context) *Request {
 }
 
 // Use adds provided middleware to this request middleware chain.
-func (r *Request) Use(m cliware.Middleware) *Request {
-	r.before.Use(m)
+func (r *Request) Use(m ...cliware.Middleware) *Request {
+	r.before.Use(m...)
 	return r
 }
 
@@ -174,11 +173,10 @@ func (r *Request) Send() (*Response, error) {
 	r.before.Use(r.after)
 	sender := r.before.Exec(cliware.HandlerFunc(r.sendRequest))
 
-	// sender := r.Middleware.Exec(cliware.HandlerFunc(r.sendRequest))
 	if r.context == nil {
 		r.context = context.Background()
 	}
-	r.context = SetClient(r.context, r.Client.client)
+	r.context = clientToContext(r.context, r.Client.client)
 	resp, err := sender.Handle(r.context, cliware.EmptyRequest())
 	return BuildResponse(resp, err), err
 }
