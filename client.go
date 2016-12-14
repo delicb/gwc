@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"go.delic.rs/cliware"
+	"go.delic.rs/cliware-middlewares/retry"
 )
 
 // Doer defines that object is capable of executing HTTP request with provided
@@ -39,8 +40,7 @@ func New(client *http.Client, middlewares ...cliware.Middleware) *Client {
 	if client.CheckRedirect == nil {
 		client.CheckRedirect = CopyHeadersRedirect
 	}
-	// TODO: Uncomment when feature/retry is merged to master in cliware-middlewares
-	//retry.Enable(client)
+	retry.Enable(client)
 	chain := cliware.NewChain(middlewares...)
 	return &Client{
 		client: client,
