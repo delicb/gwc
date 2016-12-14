@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"go.delic.rs/cliware-middlewares/headers"
-	"go.delic.rs/cliware-middlewares/responsebody"
+	"go.delic.rs/cliware-middlewares/errors"
 )
 
 type HTTPBinResponse struct {
@@ -21,17 +21,19 @@ func Example() {
 		http.DefaultClient,
 		// Add user agent header, it will be applied to all requests
 		headers.Add("User-Agent", "example-client"),
-		responsebody.JSON(respBody),
+		errors.Errors(),
 	)
 	// send request
 	resp, err := client.Get().URL("https://httpbin.org/get").Send()
+
+	// check errors
+	// because of errors middleware included in client, ever status codes
+	// 400+ will be turned into errors.
 	if err != nil {
 		panic(err)
 	}
-	if resp.StatusCode != 200 {
-		panic(fmt.Errorf("Expected status code 200, got: %s", resp.Status))
-	}
 
+	resp.JSON(respBody)
 	fmt.Println(respBody.Headers.UserAgent)
 	// output: example-client
 }

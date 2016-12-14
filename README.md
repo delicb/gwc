@@ -19,10 +19,67 @@ of box it should support most common use cases.
 # Install
 Run `go get go.delic.rs/gwc` in terminal.
 
+# Example
+There is testable example in this repository. It basically does following:
+```go
+package gwc
+
+import (
+	"fmt"
+	"net/http"
+
+    "go.delic.rs/gwc"
+	"go.delic.rs/cliware-middlewares/headers"
+	"go.delic.rs/cliware-middlewares/errors"
+)
+
+type HTTPBinResponse struct {
+	Headers struct {
+		UserAgent string `json:"User-Agent"`
+	} `json:"headers"`
+}
+
+func main() {
+	respBody := new(HTTPBinResponse)
+
+	client := gwc.New(
+		http.DefaultClient,
+		// Add user agent header, it will be applied to all requests
+		headers.Add("User-Agent", "example-client"),
+		errors.Errors(),
+	)
+	// send request
+	resp, err := client.Get().URL("https://httpbin.org/get").Send()
+	
+	// check errors
+	// because of errors middleware included in client, ever status codes 
+	// 400+ will be turned into errors.
+	if err != nil {
+		panic(err)
+	}
+
+	resp.JSON(respBody)
+	fmt.Println(respBody.Headers.UserAgent)
+	// output: example-client
+}
+
+```
+
+In this example we create new GWC instance with some middlewares (in this case
+we set `User-Agent` header to each request sent using this middleware).
+
+We use client to send request and (after some error checking) we deserialize
+JSON body to structure.
+
+More complex example (small part of client for big API) can be found 
+[here](https://github.com/delicb/sevenbridges-go).
 
 # State
 This is early development, not stable, backward compatibility not guarantied.
-**Not recommended for use in production yet**.
+
+# Contribution
+Any contribution is welcome. If you find this code useful, please let me know.
+If you find bugs - feel free to open an issue, or, even better, new pull request.
 
 # Credits
 Idea and bunch of implementation details were taken from cool GoLang HTTP client
