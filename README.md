@@ -28,9 +28,9 @@ import (
 	"fmt"
 	"net/http"
 
-    "go.delic.rs/gwc"
-	"go.delic.rs/cliware-middlewares/headers"
-	"go.delic.rs/cliware-middlewares/errors"
+    "github.com/delicb/gwc"
+	"github.com/delicb/cliware-middlewares/headers"
+	"github.com/delicb/cliware-middlewares/errors"
 )
 
 type HTTPBinResponse struct {
