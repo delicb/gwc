@@ -3,7 +3,7 @@ package gwc
 import (
 	"context"
 
-	"go.delic.rs/cliware"
+	"github.com/delicb/cliware"
 )
 
 // Group is container of any additional middlewares that group of endpoints use.

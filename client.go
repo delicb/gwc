@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"go.delic.rs/cliware"
-	"go.delic.rs/cliware-middlewares/retry"
+	"github.com/delicb/cliware"
+	"github.com/delicb/cliware-middlewares/retry"
 )
 
 // Doer defines that object is capable of executing HTTP request with provided

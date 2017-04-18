@@ -6,8 +6,8 @@ import (
 
 	"context"
 
-	"go.delic.rs/cliware"
-	"go.delic.rs/gwc"
+	"github.com/delicb/cliware"
+	"github.com/delicb/gwc"
 )
 
 func TestNewRequest(t *testing.T) {

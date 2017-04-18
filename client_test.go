@@ -7,8 +7,8 @@ import (
 
 	"reflect"
 
-	"go.delic.rs/cliware"
-	"go.delic.rs/gwc"
+	"github.com/delicb/cliware"
+	"github.com/delicb/gwc"
 )
 
 type mockTransport struct {

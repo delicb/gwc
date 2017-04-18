@@ -17,7 +17,7 @@ Because it is based on middlewares client is very pluggable. However, even out
 of box it should support most common use cases.
 
 # Install
-Run `go get go.delic.rs/gwc` in terminal.
+Run `go get github.com/delicb/gwc` in terminal.
 
 # Example
 There is testable example in this repository. It basically does following:

@@ -4,13 +4,13 @@ import (
 	"context"
 	"net/http"
 
-	"go.delic.rs/cliware"
+	"github.com/delicb/cliware"
 
-	"go.delic.rs/cliware-middlewares/body"
-	"go.delic.rs/cliware-middlewares/cookies"
-	"go.delic.rs/cliware-middlewares/headers"
-	"go.delic.rs/cliware-middlewares/query"
-	cwurl "go.delic.rs/cliware-middlewares/url"
+	"github.com/delicb/cliware-middlewares/body"
+	"github.com/delicb/cliware-middlewares/cookies"
+	"github.com/delicb/cliware-middlewares/headers"
+	"github.com/delicb/cliware-middlewares/query"
+	cwurl "github.com/delicb/cliware-middlewares/url"
 )
 
 // Request is struct used to hold information (mostly middlewares) used
