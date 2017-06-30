@@ -2,7 +2,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/delicb/gwc)](https://goreportcard.com/report/github.com/delicb/gwc)
 [![Build Status](https://travis-ci.org/delicb/gwc.svg?branch=master)](https://travis-ci.org/delicb/gwc)
 [![codecov](https://codecov.io/gh/delicb/gwc/branch/master/graph/badge.svg)](https://codecov.io/gh/delicb/gwc)
-![status](https://img.shields.io/badge/status-beta-red.svg)
+![status](https://img.shields.io/badge/status-beta-orange.svg)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/delicb/gwc)
 
 
@@ -71,11 +71,12 @@ we set `User-Agent` header to each request sent using this middleware).
 We use client to send request and (after some error checking) we deserialize
 JSON body to structure.
 
-More complex example (small part of client for big API) can be found 
-[here](https://github.com/delicb/sevenbridges-go).
-
 # State
 This is early development, not stable, backward compatibility not guarantied.
+
+Currently, `GWC` requires `GoLang 1.7` to work. However, in the future I will 
+not hesitate from using new language features. Therefor, make sure to vendor 
+this library if you intend to use it.
 
 # Contribution
 Any contribution is welcome. If you find this code useful, please let me know.
