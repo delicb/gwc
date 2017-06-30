@@ -33,9 +33,9 @@ type mockMiddleware struct {
 }
 
 func (m *mockMiddleware) Exec(next cliware.Handler) cliware.Handler {
-	return cliware.HandlerFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+	return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 		m.called = true
-		return next.Handle(ctx, req)
+		return next.Handle(req)
 	})
 }
 
@@ -75,9 +75,9 @@ func TestUseFunc(t *testing.T) {
 	client := gwc.New(dummyClient())
 	var called bool
 	client.UseFunc(func(next cliware.Handler) cliware.Handler {
-		return cliware.HandlerFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 			called = true
-			return next.Handle(ctx, req)
+			return next.Handle(req)
 		})
 	})
 	client.Get().Send()
@@ -100,9 +100,9 @@ func TestUsePostFunc(t *testing.T) {
 	client := gwc.New(dummyClient())
 	var called bool
 	client.UsePostFunc(func(next cliware.Handler) cliware.Handler {
-		return cliware.HandlerFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 			called = true
-			return next.Handle(ctx, req)
+			return next.Handle(req)
 		})
 	})
 	client.Get().Send()
@@ -115,15 +115,15 @@ func TestMiddlewareOrder(t *testing.T) {
 	client := gwc.New(dummyClient())
 	order := []string{}
 	client.UseFunc(func(next cliware.Handler) cliware.Handler {
-		return cliware.HandlerFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 			order = append(order, "pre")
-			return next.Handle(ctx, req)
+			return next.Handle(req)
 		})
 	})
 	client.UsePostFunc(func(next cliware.Handler) cliware.Handler {
-		return cliware.HandlerFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 			order = append(order, "post")
-			return next.Handle(ctx, req)
+			return next.Handle(req)
 		})
 	})
 	client.Get().Send()

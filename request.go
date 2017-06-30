@@ -161,9 +161,8 @@ func (r *Request) BodyJSON(data interface{}) *Request {
 }
 
 // sendRequest is private method that does actual request dispatching.
-func (r *Request) sendRequest(ctx context.Context, req *http.Request) (*http.Response, error) {
-	reqWithContext := req.WithContext(ctx)
-	return r.Client.client.Do(reqWithContext)
+func (r *Request) sendRequest(req *http.Request) (*http.Response, error) {
+	return r.Client.client.Do(req)
 }
 
 // Send constructs and sends HTTP request.
@@ -177,6 +176,7 @@ func (r *Request) Send() (*Response, error) {
 		r.context = context.Background()
 	}
 	r.context = clientToContext(r.context, r.Client.client)
-	resp, err := sender.Handle(r.context, cliware.EmptyRequest())
+	req := cliware.EmptyRequest().WithContext(r.context)
+	resp, err := sender.Handle(req)
 	return BuildResponse(resp, err), err
 }

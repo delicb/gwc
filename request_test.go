@@ -50,9 +50,9 @@ func TestRequest_UseFunc(t *testing.T) {
 	req := gwc.NewRequest(client, cliware.NewChain(), cliware.NewChain())
 	var called bool
 	req.UseFunc(func(next cliware.Handler) cliware.Handler {
-		return cliware.HandlerFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 			called = true
-			return next.Handle(ctx, req)
+			return next.Handle(req)
 		})
 	})
 	_, err := req.Send()
