@@ -35,7 +35,8 @@ type Client struct {
 // on a client.
 func New(client *http.Client, middlewares ...cliware.Middleware) *Client {
 	if client == nil {
-		client = http.DefaultClient
+		// not using http.DefaultClient since changing its RoundTripper would change it globally
+		client = &http.Client{}
 	}
 	retry.Enable(client)
 	chain := cliware.NewChain(middlewares...)
