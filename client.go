@@ -28,7 +28,7 @@ type Client struct {
 // New creates and returns instance of a client.
 // First parameter is http.Client instance that will be used to send actual
 // requests. This can be used to modify default behavior (like TLS or
-// timeouts). If nil is provided, http.DefaultClient will be used.
+// timeouts). If nil is provided, &http.Client{} will be used.
 //
 // Also, any number of middlewares can be provided. These will be used for
 // each request. Additional middlewares can be added by using "Use*" methods
