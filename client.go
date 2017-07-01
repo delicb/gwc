@@ -37,9 +37,6 @@ func New(client *http.Client, middlewares ...cliware.Middleware) *Client {
 	if client == nil {
 		client = http.DefaultClient
 	}
-	if client.CheckRedirect == nil {
-		client.CheckRedirect = CopyHeadersRedirect
-	}
 	retry.Enable(client)
 	chain := cliware.NewChain(middlewares...)
 	return &Client{
