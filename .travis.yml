@@ -1,8 +1,11 @@
 language: go
 
 go:
-  - 1.8
-  - 1.7
+  - tip
+  - "1.10"
+  - "1.9"
+  - "1.8"
+  - "1.7"
 
 go_import_path: github.com/delicb/gwc
 
