@@ -145,27 +145,27 @@ func TestRequest_AddPath(t *testing.T) {
 		{
 			OriginalURL: "",
 			Param:       "",
-			Expected:    "http://",
+			Expected:    "",
 		},
 		{
 			OriginalURL: "www.google.com",
 			Param:       "",
-			Expected:    "http://www.google.com",
+			Expected:    "https://www.google.com",
 		},
 		{
 			OriginalURL: "www.example.com/path",
 			Param:       "",
-			Expected:    "http://www.example.com/path",
+			Expected:    "https://www.example.com/path",
 		},
 		{
 			OriginalURL: "www.example.com/path",
 			Param:       "/additional_path",
-			Expected:    "http://www.example.com/path/additional_path",
+			Expected:    "https://www.example.com/path/additional_path",
 		},
 		{
-			OriginalURL: "https://www.example.com/path",
+			OriginalURL: "http://www.example.com/path",
 			Param:       "/additional_path",
-			Expected:    "https://www.example.com/path/additional_path",
+			Expected:    "http://www.example.com/path/additional_path",
 		},
 	} {
 		client := gwc.New(dummyClient())
@@ -190,14 +190,14 @@ func TestRequest_Param(t *testing.T) {
 		{
 			OriginalURL: "",
 			Params:      map[string]string{},
-			Expected:    "http://",
+			Expected:    "",
 		},
 		{
 			OriginalURL: "www.example.com/:param1/keep/:param2",
 			Params: map[string]string{
 				"param1": "value",
 			},
-			Expected: "http://www.example.com/value/keep/:param2",
+			Expected: "https://www.example.com/value/keep/:param2",
 		},
 	} {
 		client := gwc.New(dummyClient())
@@ -226,14 +226,14 @@ func TestRequest_Params(t *testing.T) {
 		{
 			OriginalURL: "",
 			Params:      map[string]string{},
-			Expected:    "http://",
+			Expected:    "",
 		},
 		{
 			OriginalURL: "www.example.com/:param1/keep/:param2",
 			Params: map[string]string{
 				"param1": "value",
 			},
-			Expected: "http://www.example.com/value/keep/:param2",
+			Expected: "https://www.example.com/value/keep/:param2",
 		},
 	} {
 		client := gwc.New(dummyClient())
@@ -261,28 +261,28 @@ func TestRequest_AddQuery(t *testing.T) {
 		{
 			OriginalURL: "",
 			Params:      map[string]string{},
-			Expected:    "http://",
+			Expected:    "",
 		},
 		{
 			OriginalURL: "",
 			Params: map[string]string{
 				"a": "b",
 			},
-			Expected: "http://?a=b",
+			Expected: "?a=b",
 		},
 		{
 			OriginalURL: "www.example.com?a=b",
 			Params: map[string]string{
 				"a": "c",
 			},
-			Expected: "http://www.example.com?a=b&a=c",
+			Expected: "https://www.example.com?a=b&a=c",
 		},
 		{
 			OriginalURL: "www.example.com/",
 			Params: map[string]string{
 				"param1": "value",
 			},
-			Expected: "http://www.example.com/?param1=value",
+			Expected: "https://www.example.com/?param1=value",
 		},
 	} {
 		client := gwc.New(dummyClient())
@@ -312,28 +312,28 @@ func TestRequest_SetQuery(t *testing.T) {
 		{
 			OriginalURL: "",
 			Params:      map[string]string{},
-			Expected:    "http://",
+			Expected:    "",
 		},
 		{
 			OriginalURL: "",
 			Params: map[string]string{
 				"a": "b",
 			},
-			Expected: "http://?a=b",
+			Expected: "?a=b",
 		},
 		{
 			OriginalURL: "www.example.com?a=b",
 			Params: map[string]string{
 				"a": "c",
 			},
-			Expected: "http://www.example.com?a=c",
+			Expected: "https://www.example.com?a=c",
 		},
 		{
 			OriginalURL: "www.example.com/",
 			Params: map[string]string{
 				"param1": "value",
 			},
-			Expected: "http://www.example.com/?param1=value",
+			Expected: "https://www.example.com/?param1=value",
 		},
 	} {
 		client := gwc.New(dummyClient())
@@ -363,28 +363,28 @@ func TestRequest_SetQueryParams(t *testing.T) {
 		{
 			OriginalURL: "",
 			Params:      map[string]string{},
-			Expected:    "http://",
+			Expected:    "",
 		},
 		{
 			OriginalURL: "",
 			Params: map[string]string{
 				"a": "b",
 			},
-			Expected: "http://?a=b",
+			Expected: "?a=b",
 		},
 		{
 			OriginalURL: "www.example.com?a=b",
 			Params: map[string]string{
 				"a": "c",
 			},
-			Expected: "http://www.example.com?a=c",
+			Expected: "https://www.example.com?a=c",
 		},
 		{
 			OriginalURL: "www.example.com/",
 			Params: map[string]string{
 				"param1": "value",
 			},
-			Expected: "http://www.example.com/?param1=value",
+			Expected: "https://www.example.com/?param1=value",
 		},
 	} {
 		client := gwc.New(dummyClient())
