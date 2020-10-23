@@ -30,11 +30,13 @@ func newMockTransport(responseCode int) *mockTransport {
 
 type mockMiddleware struct {
 	called bool
+	count  int
 }
 
 func (m *mockMiddleware) Exec(next cliware.Handler) cliware.Handler {
 	return cliware.HandlerFunc(func(req *http.Request) (*http.Response, error) {
 		m.called = true
+		m.count += 1
 		return next.Handle(req)
 	})
 }
