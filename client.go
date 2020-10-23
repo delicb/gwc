@@ -140,6 +140,5 @@ func (c *Client) DoCtx(ctx context.Context, middlewares ...cliware.Middleware) (
 	req := c.Request()
 	req.SetContext(ctx)
 	req.Use(middlewares...)
-	req.Use(c.After)
 	return req.Send()
 }
