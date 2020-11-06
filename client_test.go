@@ -232,3 +232,20 @@ func TestClientOnContext(t *testing.T) {
 		t.Error("Got wrong instance of http.Client.")
 	}
 }
+
+func TestClient_AfterCalledOnce(t *testing.T) {
+	client := gwc.New(dummyClient())
+	countingMockMiddleware := &mockMiddleware{}
+	client.UsePost(countingMockMiddleware)
+	workingMockMiddleware := &mockMiddleware{}
+	_, err := client.Do(workingMockMiddleware)
+	if err != nil {
+		t.Error("Got unexpected error:", err)
+	}
+	if !workingMockMiddleware.called {
+		t.Error("Working middleware not called.")
+	}
+	if countingMockMiddleware.count != 1 {
+		t.Error("Middleware not called only once.")
+	}
+}
